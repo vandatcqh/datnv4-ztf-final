@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package token.service;
+
+option java_multiple_files = true;
+option java_package = "org.example.grpc";
+option java_outer_classname = "TokenServiceProto";
+
+service AccessTokenService {
+
+  rpc GenerateAccessToken (GenerateAccessTokenRequest) returns (GenerateAccessTokenResponse);
+
+  rpc ValidateAccessToken (ValidateAccessTokenRequest) returns (ValidateAccessTokenResponse);
+}
+
+message GenerateAccessTokenRequest {
+  int32 user_id = 1;
+}
+
+message GenerateAccessTokenResponse {
+  string access_token = 1;
+  int64 expires_at = 2; // unix timestamp
+}
+
+message ValidateAccessTokenRequest {
+  string access_token = 1;
+}
+
+message ValidateAccessTokenResponse {
+  bool valid = 1;
+  int32 user_id = 2;
+}
+
+
+service RefreshTokenService {
+
+  rpc CreateRefreshToken (CreateRefreshTokenRequest) returns (CreateRefreshTokenResponse);
+
+  rpc RotateRefreshToken (RotateRefreshTokenRequest) returns (RotateRefreshTokenResponse);
+
+  rpc RevokeToken (RevokeTokenRequest) returns (RevokeTokenResponse);
+
+  rpc RevokeAllTokensOfUser (RevokeAllTokensOfUserRequest) returns (RevokeAllTokensOfUserResponse);
+
+  rpc IsValid (IsValidRequest) returns (IsValidResponse);
+}
+
+message CreateRefreshTokenRequest {
+  int32 user_id = 1;
+}
+
+message CreateRefreshTokenResponse {
+  string refresh_token = 1;
+  int64 valid_until = 2;
+}
+
+message RotateRefreshTokenRequest {
+  string old_token = 1;
+  int32 user_id = 2;
+}
+
+message RotateRefreshTokenResponse {
+  string new_token = 1;
+  int64 valid_until = 2;
+}
+
+message RevokeTokenRequest {
+  string token = 1;
+}
+
+message RevokeTokenResponse {
+  bool success = 1;
+}
+
+message RevokeAllTokensOfUserRequest {
+  int32 user_id = 1;
+}
+
+message RevokeAllTokensOfUserResponse {
+  int32 revoked_count = 1;
+}
+
+message IsValidRequest {
+  string token = 1;
+}
+
+message IsValidResponse {
+  bool valid = 1;
+  int32 user_id = 2;
+  int64 valid_until = 3;
+}

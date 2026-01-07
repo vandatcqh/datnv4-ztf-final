@@ -1,0 +1,20 @@
+syntax = "proto3";
+package authz;
+
+option java_multiple_files = true;
+option java_package = "org.example.grpc";
+
+service AuthzService {
+  rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}
+
+message CheckPermissionRequest {
+  int32 userId = 1;
+  string path = 2;
+  string method = 3;
+}
+
+message CheckPermissionResponse {
+  bool allowed = 1;
+  string message = 2;
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package otp.service;
+
+option java_package = "org.example.grpc";
+option java_multiple_files = true;
+option java_outer_classname = "OtpServiceProto";
+
+service OtpService {
+  rpc GenerateOtp(GenerateOtpRequest) returns (GenerateOtpResponse);
+  rpc ValidateOtp(ValidateOtpRequest) returns (ValidateOtpResponse);
+}
+
+message GenerateOtpRequest {
+  string type = 1;
+  string transaction_id = 2;
+  int32 expiry_minutes = 3;
+}
+
+message GenerateOtpResponse {
+  string otp_code = 1;
+}
+
+message ValidateOtpRequest {
+  string type = 1;
+  string transaction_id = 2;
+  string otp_code = 3;
+}
+
+message ValidateOtpResponse {
+  bool valid = 1;
+}

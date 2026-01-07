@@ -1,0 +1,80 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+    id "com.google.protobuf" version "0.9.0"   // plugin protobuf
+}
+
+group = 'org.example'
+//version = '1.0-SNAPSHOT'
+sourceCompatibility = '8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // gRPC
+    implementation 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
+    implementation 'io.grpc:grpc-protobuf:1.58.0'
+    implementation 'io.grpc:grpc-stub:1.58.0'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
+    testImplementation 'it.ozimov:embedded-redis:0.7.2'
+
+    //OpenTelemetry
+    implementation 'io.opentelemetry:opentelemetry-api:1.32.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk:1.32.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk-metrics:1.32.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk-trace:1.32.0'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp:1.32.0'
+    implementation 'io.opentelemetry:opentelemetry-sdk-logs:1.32.0'
+    implementation 'io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:1.32.1-alpha'
+
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.1"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.58.0"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ['build/generated/source/proto/main/java',
+                        'build/generated/source/proto/main/grpc']
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

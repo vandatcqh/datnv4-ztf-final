@@ -1,0 +1,79 @@
+# ========================
+# IntelliJ / JetBrains
+# ========================
+.idea/
+*.iml
+out/
+*.ipr
+*.iws
+
+# ========================
+# Java / Maven / Gradle
+# ========================
+**/target/
+**/build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ========================
+# System / OS
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Logs / Temp
+# ========================
+*.log
+logs/
+*.tmp
+tmp/
+*.bak
+*.swp
+*.orig
+*.out
+
+# ========================
+# Environment & Secrets
+# ========================
+.env
+*.env.local
+*.env.development
+*.env.production
+*.secret
+*.key
+*.pem
+
+# ========================
+# Docker / Compose
+# ========================
+docker-compose.override.yml
+*.pid
+*.sock
+
+# ========================
+# DB / SQL Dumps
+# ========================
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+dump.rdb
+
+# ========================
+# Monitoring / Data Volumes
+# ========================
+prometheus_data/
+postgres_data/
+data/
+volume/
+
+# ========================
+# Node / Frontend (nếu có)
+# ========================
+node_modules/
+dist/
+coverage/
+*.tar
+*.tar.gz
+

@@ -1,0 +1,57 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:1399"
+
+  loki:
+    endpoint: "http://loki:7399/loki/api/v1/push"
+    default_labels_enabled:
+      exporter: true
+      job: true
+    tls:
+      insecure: true
+
+  logging:
+    loglevel: debug
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  batch:
+
+  transform/parse_body_json:
+    error_mode: ignore
+    log_statements:
+      - context: log
+        statements:
+          # ✅ Parse JSON trong log.body -> gán lại thành attributes
+          - merge_maps(attributes, ParseJSON(body), "upsert")
+
+service:
+  telemetry:
+    metrics:
+      level: none
+
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus, logging]
+
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [logging]
+
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, transform/parse_body_json, batch]
+      exporters: [loki, logging]

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ===== OpenTelemetry OTLP Appender ===== -->
+    <appender name="OTLP" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+        <!-- Capture tất cả MDC, ví dụ traceId, spanId -->
+        <captureMdcAttributes>*</captureMdcAttributes>
+        <captureMarkerAttribute>true</captureMarkerAttribute>
+    </appender>
+
+    <!-- ===== Console Appender đơn giản ===== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} %-5level %logger{36} - traceId=%X{traceId} spanId=%X{spanId} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ===== Logger chính cho Token Service ===== -->
+    <logger name="org.example" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="OTLP"/>
+    </logger>
+
+    <!-- ===== Root logger ===== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="OTLP"/>
+    </root>
+
+</configuration>
