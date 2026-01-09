@@ -12,7 +12,7 @@ public class AuthzGrpcConfig {
     @Bean
     public ManagedChannel authzChannel() {
         return ManagedChannelBuilder
-                .forAddress("localhost", 9053)
+                .forAddress("authzmw-service", 9053)
                 .usePlaintext()
                 .enableRetry()
                 .build();

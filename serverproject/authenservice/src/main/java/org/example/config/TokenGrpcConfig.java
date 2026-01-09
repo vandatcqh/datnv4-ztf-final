@@ -13,7 +13,7 @@ public class TokenGrpcConfig {
     @Bean
     public ManagedChannel tokenChannel() {
         return ManagedChannelBuilder
-                .forAddress("localhost", 9052) // port Token service
+                .forAddress("token-service", 9052) // port Token service
                 .usePlaintext()
                 .enableRetry()
                 .build();

@@ -12,7 +12,7 @@ public class OtpGrpcConfig {
     @Bean
     public ManagedChannel otpChannel() {
         return ManagedChannelBuilder
-                .forAddress("localhost", 9051) // port OTP service
+                .forAddress("otp-service", 9051) // port OTP service
                 .usePlaintext()
                 .enableRetry()
                 .build();
